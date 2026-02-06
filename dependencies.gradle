@@ -16,7 +16,10 @@ dependencies {
     implementation libs.packagedAuto
     implementation libs.valhelsiaCore
 
-    compileOnly libs.forbiddenArcanusSource
+    if (System.getenv("GITHUB_RUN_NUMBER") == null)
+        compileOnly libs.forbiddenArcanusSource
+    else compileOnly libs.forbiddenArcanus
+
     compileOnly libs.appliedFlux
     compileOnly libs.megaCells
     compileOnly libs.mekanism
