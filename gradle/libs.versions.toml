@@ -1,0 +1,63 @@
+[versions]
+ae2 = "19.2.17"
+guideME = "21.1.15"
+glodium = "5821676"
+extendedAE = "7188776"
+ae2wt = "19.3.0"
+advancedAE = "7222372"
+curios = "6529130"
+appliedFlux = "5614830"
+megaCells = "6005043"
+jade = "5427817"
+mekanism = "1.21.1-10.7.15.81"
+appliedMekanistics = "5978711"
+rhino = "2101.2.5-build.54"
+kubejs = "2101.7.1-build.188"
+emi = "1.1.22+1.21.1"
+rei = "16.0.729"
+jei = "19.21.0.247"
+ae2Jei = "5748513"
+geckolib = "7009924"
+ftbLibrary = "2101.1.29"
+ftbTeams = "2101.1.9"
+architectury = "5786327"
+jech = "6681787"
+modernUI = "6956436"
+expandedAE = "6910849"
+kotlinForForge = "5.10.0"
+packagedAuto = "4.0.8.21"
+forbiddenArcanus = "6875895"
+forbiddenArcanusSource = "2.6.1fix"
+valhelsiaCore = "6296775"
+
+[libraries]
+ae2 = { group = "org.appliedenergistics", name = "appliedenergistics2", version.ref = "ae2" }
+guideME = { group = "org.appliedenergistics", name = "guideme", version.ref = "guideME" }
+glodium = { group = "curse.maven", name = "glodium-957920", version.ref = "glodium" }
+extendedAE = { group = "curse.maven", name = "ex-pattern-provider-892005", version.ref = "extendedAE" }
+ae2wt = { group = "de.mari_023", name = "ae2wtlib", version.ref = "ae2wt" }
+advancedAE = { group = "curse.maven", name = "advancedae-1084104", version.ref = "advancedAE" }
+curios = { group = "curse.maven", name = "curios-309927", version.ref = "curios" }
+appliedFlux = { group = "curse.maven", name = "applied-flux-965012", version.ref = "appliedFlux" }
+megaCells = { group = "curse.maven", name = "mega-cells-622112", version.ref = "megaCells" }
+jade = { group = "curse.maven", name = "jade-324717", version.ref = "jade" }
+mekanism = { group = "mekanism", name = "Mekanism", version.ref = "mekanism" }
+appliedMekanistics = { group = "curse.maven", name = "applied-mekanistics-574300", version.ref = "appliedMekanistics" }
+rhino = { group = "dev.latvian.mods", name = "rhino", version.ref = "rhino" }
+kubejs = { group = "dev.latvian.mods", name = "kubejs-neoforge", version.ref = "kubejs" }
+jech = { group = "curse.maven", name = "just-enough-characters-250702", version.ref = "jech" }
+emi = { group = "dev.emi", name = "emi-neoforge", version.ref = "emi" }
+rei = { group = "me.shedaniel", name = "RoughlyEnoughItems-neoforge", version.ref = "rei" }
+jei = { group = "mezz.jei", name = "jei-1.21.1-neoforge", version.ref = "jei" }
+ae2Jei = { group = "curse.maven", name = "ae2-jei-integration-1074338", version.ref = "ae2Jei" }
+geckolib = { group = "curse.maven", name = "geckolib-388172", version.ref = "geckolib" }
+ftbLibrary = { group = "dev.ftb.mods", name = "ftb-library-neoforge", version.ref = "ftbLibrary" }
+ftbTeams = { group = "dev.ftb.mods", name = "ftb-teams-neoforge", version.ref = "ftbTeams" }
+architectury = { group = "curse.maven", name = "architectury-api-419699", version.ref = "architectury" }
+modernUI = { group = "curse.maven", name = "modern-ui-352491", version.ref = "modernUI" }
+expandedAE = { group = "curse.maven", name = "expanded-ae-1213351", version.ref = "expandedAE" }
+kotlinForForge = { group = "thedarkcolour", name = "kotlinforforge-neoforge", version.ref = "kotlinForForge" }
+packagedAuto = { group = "thelm.packagedauto", name = "PackagedAuto-1.21.1", version.ref = "packagedAuto" }
+forbiddenArcanus = { group = "curse.maven", name = "forbidden-arcanus-309858", version.ref = "forbiddenArcanus" }
+forbiddenArcanusSource = { group = "com.stal111.forbidden_arcanus", name = "neoforge", version.ref = "forbiddenArcanusSource" }
+valhelsiaCore = { group = "curse.maven", name = "valhelsia-core-416935", version.ref = "valhelsiaCore" }

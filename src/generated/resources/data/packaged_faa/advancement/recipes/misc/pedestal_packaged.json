@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component": {
+      "conditions": {
+        "items": [
+          {
+            "items": "packagedauto:package_component"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "packaged_faa:pedestal_packaged"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "packaged_faa:pedestal_packaged"
+    ]
+  }
+}

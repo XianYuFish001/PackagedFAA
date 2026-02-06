@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "packaged_faa:pedestal_packaged"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "packaged_faa:blocks/pedestal_packaged"
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "packagedauto:package_component"
+    },
+    {
+      "item": "forbidden_arcanus:darkstone_pedestal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "packaged_faa:pedestal_packaged"
+  }
+}

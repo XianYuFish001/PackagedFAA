@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "packaged_faa:block/pedestal_packaged"
+    }
+  }
+}

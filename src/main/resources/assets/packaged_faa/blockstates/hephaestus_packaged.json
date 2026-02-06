@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "level_forge=1": {
+      "model": "packaged_faa:block/hephaestus/1"
+    },
+    "level_forge=2": {
+      "model": "packaged_faa:block/hephaestus/2"
+    },
+    "level_forge=3": {
+      "model": "packaged_faa:block/hephaestus/3"
+    },
+    "level_forge=4": {
+      "model": "packaged_faa:block/hephaestus/4"
+    },
+    "level_forge=5": {
+      "model": "packaged_faa:block/hephaestus/5"
+    }
+  }
+}

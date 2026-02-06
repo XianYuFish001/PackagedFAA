@@ -1,0 +1,35 @@
+{
+  "parent": "packaged_faa:block/hephaestus/3",
+  "overrides": [
+    {
+      "predicate": {
+        "packaged_faa:level": 1.0
+      },
+      "model": "packaged_faa:item/hephaestus/1"
+    },
+    {
+      "predicate": {
+        "packaged_faa:level": 2.0
+      },
+      "model": "packaged_faa:item/hephaestus/2"
+    },
+    {
+      "predicate": {
+        "packaged_faa:level": 3.0
+      },
+      "model": "packaged_faa:item/hephaestus/3"
+    },
+    {
+      "predicate": {
+        "packaged_faa:level": 4.0
+      },
+      "model": "packaged_faa:item/hephaestus/4"
+    },
+    {
+      "predicate": {
+        "packaged_faa:level": 5.0
+      },
+      "model": "packaged_faa:item/hephaestus/5"
+    }
+  ]
+}

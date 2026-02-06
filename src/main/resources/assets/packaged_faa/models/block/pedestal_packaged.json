@@ -1,0 +1,7 @@
+{
+  "parent": "forbidden_arcanus:block/template_pedestal",
+  "textures": {
+    "side": "packaged_faa:block/pedestal_packaged_side",
+    "top": "packaged_faa:block/pedestal_packaged_top"
+  }
+}

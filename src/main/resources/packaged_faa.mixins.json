@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "package": "com.fish.packaged_faa.mixin.core",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MixinBlockJarEssence",
+    "MixinCategoryUpgrade",
+    "MixinClibanoFrameHandler",
+    "MixinCrystalArcane",
+    "MixinJarEssence",
+    "MixinJarTiled",
+    "MixinManagerRitual",
+    "MixinResultUpgrade",
+    "accessor.AccessorCraftingJob",
+    "accessor.AccessorCraftingJob$AccessorJobProgress",
+    "accessor.AccessorCraftingJobAdv",
+    "accessor.AccessorCraftingJobAdv$AccessorJobProgress",
+    "accessor.AccessorCraftingLogic",
+    "accessor.AccessorCraftingLogicAdv",
+    "overrider.OverriderBlockJarEssence",
+    "overrider.OverriderClibanoFrame",
+    "overrider.OverriderCrystalArcane"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

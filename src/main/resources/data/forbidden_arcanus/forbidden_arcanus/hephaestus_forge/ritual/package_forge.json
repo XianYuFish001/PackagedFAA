@@ -1,0 +1,40 @@
+{
+  "essences": {
+    "aureal": 114,
+    "experience": 514
+  },
+  "inputs": [
+    {
+      "amount": 2,
+      "ingredient": {
+        "item": "minecraft:iron_ingot"
+      }
+    },
+    {
+      "amount": 2,
+      "ingredient": {
+        "item": "minecraft:copper_ingot"
+      }
+    },
+    {
+      "amount": 3,
+      "ingredient": {
+        "item": "minecraft:redstone"
+      }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "tag": "c:glass_blocks"
+      }
+    }
+  ],
+  "magic_circle": "forbidden_arcanus:upgrade_final_tier",
+  "main_ingredient": {
+    "item": "packagedauto:package_component"
+  },
+  "result": {
+    "type": "forbidden_arcanus:upgrade_tier",
+    "result_tier": -1
+  }
+}

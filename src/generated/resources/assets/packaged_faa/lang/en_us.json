@@ -1,0 +1,23 @@
+{
+  "block.packaged_faa.hephaestus_packaged": "Packaged Hephaestus Forge",
+  "block.packaged_faa.pedestal_packaged": "Packaged Pedestal",
+  "fluid.packaged_faa.fluid_aureal": "Aureal",
+  "fluid.packaged_faa.fluid_blood": "Blood",
+  "fluid.packaged_faa.fluid_experience": "Experience",
+  "fluid.packaged_faa.fluid_souls": "Souls",
+  "fluid.type.packaged_faa.type_aureal": "Aureal",
+  "fluid.type.packaged_faa.type_blood": "Blood",
+  "fluid.type.packaged_faa.type_experience": "Experience",
+  "fluid.type.packaged_faa.type_souls": "Souls",
+  "jade.info.packaged_faa.hephaestus.enhancers": "Enhancers:",
+  "jade.info.packaged_faa.hephaestus.essences": "Essences:",
+  "jade.info.packaged_faa.hephaestus.essences.aureal": "- Aureal %s",
+  "jade.info.packaged_faa.hephaestus.essences.blood": "- Blood  %s",
+  "jade.info.packaged_faa.hephaestus.essences.experience": "- Experience %s",
+  "jade.info.packaged_faa.hephaestus.essences.souls": "- Souls %s",
+  "jade.info.packaged_faa.hephaestus.level": "Forge Level: %s",
+  "packaged_faa.configuration.soul_extract_returns": "Soul Extract Returns",
+  "packaged_faa.configuration.soul_extract_returns.tooltip": "Controls whether jar will leave Soulless Sand behind when absorbing Soul Sand/Soil around them.",
+  "tooltip.screen.packaged_faa.type_recipe.hephaestus": "Hephaestus Smithing",
+  "tooltip.screen.packaged_faa.type_recipe.hephaestus.short": "Hephaestus Smithing"
+}

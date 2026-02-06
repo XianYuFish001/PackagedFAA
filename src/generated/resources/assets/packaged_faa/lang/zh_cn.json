@@ -1,0 +1,22 @@
+{
+  "block.packaged_faa.hephaestus_packaged": "封包赫菲斯托斯锻炉",
+  "block.packaged_faa.pedestal_packaged": "封包基座",
+  "fluid.packaged_faa.fluid_aureal": "耀金",
+  "fluid.packaged_faa.fluid_blood": "血",
+  "fluid.packaged_faa.fluid_experience": "经验",
+  "fluid.packaged_faa.fluid_souls": "灵魂",
+  "fluid.type.packaged_faa.type_aureal": "耀金",
+  "fluid.type.packaged_faa.type_blood": "血",
+  "fluid.type.packaged_faa.type_experience": "经验",
+  "fluid.type.packaged_faa.type_souls": "灵魂",
+  "jade.info.packaged_faa.hephaestus.essences": "精华:",
+  "jade.info.packaged_faa.hephaestus.essences.aureal": "- 耀金 %s",
+  "jade.info.packaged_faa.hephaestus.essences.blood": "- 血   %s",
+  "jade.info.packaged_faa.hephaestus.essences.experience": "- 经验 %s",
+  "jade.info.packaged_faa.hephaestus.essences.souls": "- 灵魂 %s",
+  "jade.info.packaged_faa.hephaestus.level": "锻炉等级: %s",
+  "packaged_faa.configuration.soul_extract_returns": "灵魂提取返还",
+  "packaged_faa.configuration.soul_extract_returns.tooltip": "控制瓶罐在通过吸取周围的灵魂沙/土获取灵魂时是否会留下失魂沙",
+  "tooltip.screen.packaged_faa.type_recipe.hephaestus": "赫菲斯托斯锻造",
+  "tooltip.screen.packaged_faa.type_recipe.hephaestus.short": "赫菲斯托斯锻造"
+}
