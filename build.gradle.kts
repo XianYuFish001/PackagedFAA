@@ -1,7 +1,5 @@
 @file:Suppress("PropertyName")
 
-import kotlin.reflect.KProperty
-
 plugins {
     `java-library`
     `maven-publish`
@@ -10,10 +8,7 @@ plugins {
     id("net.neoforged.moddev") version "2.0.131"
 }
 
-private operator fun <T> PropertyDelegate.setValue(ref: Any?, property: KProperty<*>, value: T) =
-    (ref as? Project)?.setProperty(property.name, value)
-
-var mod_version: String by project
+val mod_version: String by project
 val mod_group_id: String by project
 val mod_id: String by project
 val mod_name: String by project
@@ -27,7 +22,7 @@ val loader_version_range: String by project
 
 val buildNumber: String? = System.getenv("GITHUB_RUN_NUMBER")
 if (buildNumber != null && System.getenv("BUILD_TYPE") == "snapshot")
-    mod_version = "$mod_version+build.$buildNumber"
+     project.setProperty("mod_version", "$mod_version+build.$buildNumber")
 
 version = mod_version
 group = mod_group_id

@@ -16,18 +16,14 @@ object PFAAConfig {
     }
 
     internal fun init(containerMod: ModContainer) {
-        val register = { spec: Triple<ModConfig.Type, ModConfigSpec, String> ->
-            containerMod.registerConfig(
-                spec.first,
-                spec.second,
-                "packaged_faa/${spec.third}.toml"
-            )
-        }
-
-        register(this.specServer)
+        containerMod.registerConfig(
+            specServer.first,
+            specServer.second,
+            "packaged_faa/${specServer.third}.toml"
+        )
     }
 
-    private fun spec(
+    private inline fun spec(
         spec: String, type: ModConfig.Type, modifier: (ModConfigSpec.Builder) -> Unit
     ): Triple<ModConfig.Type, ModConfigSpec, String> {
         val builder = ModConfigSpec.Builder()
@@ -35,7 +31,7 @@ object PFAAConfig {
         return Triple(type, builder.build(), spec)
     }
 
-    private fun ModConfigSpec.Builder.section(
+    private inline fun ModConfigSpec.Builder.section(
         section: String, modifier: (ModConfigSpec.Builder) -> Unit
     ): ModConfigSpec.Builder {
         this.push(section)
