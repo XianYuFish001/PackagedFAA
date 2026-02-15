@@ -10,7 +10,7 @@ plugins {
     id("net.neoforged.moddev") version "2.0.131"
 }
 
-private operator fun PropertyDelegate.setValue(ref: Any?, property: KProperty<*>, value: String) =
+private operator fun <T> PropertyDelegate.setValue(ref: Any?, property: KProperty<*>, value: T) =
     (ref as? Project)?.setProperty(property.name, value)
 
 var mod_version: String by project
