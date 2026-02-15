@@ -9,13 +9,14 @@ import com.fish.packaged_faa.common.init.PFAATiles
 import com.fish.packaged_faa.common.registry.fluid.FluidEssence
 import com.stal111.forbidden_arcanus.client.renderer.block.PedestalRenderer
 import net.minecraft.client.renderer.item.ItemProperties
+import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.event.ModelEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 
-@EventBusSubscriber(modid = PackagedFAA.MODID)
+@EventBusSubscriber(modid = PackagedFAA.MODID, value = [Dist.CLIENT])
 object EventClientInitialization {
     @SubscribeEvent
     private fun regExtensions(event: RegisterClientExtensionsEvent) {

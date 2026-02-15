@@ -50,6 +50,7 @@ jobs:
       - name: Get Version
         id: version
         run: |
+          ls
           MESSAGE=$(ls build/libs/* | awk -F '${{ steps.properties.outputs.mod_name }}-|.jar' '{print $2}')
           echo "version=$MESSAGE" >> $GITHUB_OUTPUT
 

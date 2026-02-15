@@ -21,7 +21,7 @@
     现在Clibano可以被管道等从中心交互
 
 ![FluidJars](images/FluidJars.png)
-- Fluid Essences
+- Fluid Essences / 流体精华
   - Also accepts other fluids with the same tag
     
     也接受相同标签的其他流体

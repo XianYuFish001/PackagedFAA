@@ -1,5 +1,7 @@
 @file:Suppress("PropertyName")
 
+import kotlin.reflect.KProperty
+
 plugins {
     `java-library`
     `maven-publish`
@@ -8,7 +10,10 @@ plugins {
     id("net.neoforged.moddev") version "2.0.131"
 }
 
-val mod_version: String by project
+private operator fun PropertyDelegate.setValue(ref: Any?, property: KProperty<*>, value: String) =
+    (ref as? Project)?.setProperty(property.name, value)
+
+var mod_version: String by project
 val mod_group_id: String by project
 val mod_id: String by project
 val mod_name: String by project
@@ -22,22 +27,15 @@ val loader_version_range: String by project
 
 val buildNumber: String? = System.getenv("GITHUB_RUN_NUMBER")
 if (buildNumber != null && System.getenv("BUILD_TYPE") == "snapshot")
-    project.setProperty("mod_version", "$mod_version+build.$buildNumber")
+    mod_version = "$mod_version+build.$buildNumber"
 
 version = mod_version
 group = mod_group_id
+base.archivesName = mod_name
 
-apply(from = "$rootDir/dependencies.gradle")
+apply("$rootDir/dependencies.gradle")
 
-base {
-    archivesName.set(mod_name)
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
-}
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
     version = neo_version

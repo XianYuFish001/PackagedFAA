@@ -24,7 +24,7 @@ object PFAAConfig {
             )
         }
 
-        register.invoke(this.specServer)
+        register(this.specServer)
     }
 
     private fun spec(
