@@ -25,7 +25,7 @@ class FluidEssence(source: Boolean, properties: Properties, val type: EssenceTyp
             FluidStack(this.convertTo(type), amount)
         }
 
-        fun toStack(type: EssenceType, amount: Int) = FluidStack(this.convertTo(type), amount)
+        fun EssenceType.toStack(amount: Int) = FluidStack(this@Companion.convertTo(this), amount)
 
         fun stacks(): List<FluidStack> = EssenceType.entries.map {
             FluidStack(this.convertTo(it), 32768)

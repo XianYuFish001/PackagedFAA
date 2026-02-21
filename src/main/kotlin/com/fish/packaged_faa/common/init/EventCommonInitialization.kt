@@ -47,5 +47,9 @@ object EventCommonInitialization {
             Capabilities.ItemHandler.BLOCK,
             ModBlockEntities.CLIBANO.get()
         ) { tile, _ -> tile.helperTransfer?.handlerItem() }
+        event.registerBlockEntity(
+            Capabilities.FluidHandler.BLOCK,
+            ModBlockEntities.CLIBANO.get()
+        ) { tile, _ -> tile.helperTransfer?.handlerFluid() }
     }
 }

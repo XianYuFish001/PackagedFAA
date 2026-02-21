@@ -1,6 +1,7 @@
 package com.fish.packaged_faa.mixin.extension
 
 import com.fish.packaged_faa.common.registry.fluid.FluidEssence
+import com.fish.packaged_faa.common.registry.fluid.FluidEssence.Companion.toStack
 import com.stal111.forbidden_arcanus.common.block.entity.EssenceUtremJarBlockEntity
 import com.stal111.forbidden_arcanus.common.block.entity.forge.essence.EssenceType
 import com.stal111.forbidden_arcanus.common.block.properties.ModBlockStateProperties
@@ -92,7 +93,7 @@ interface ExtensionJarEssence {
 
         override fun getFluidInTank(slot: Int): FluidStack {
             if (slot != 0) return FluidStack.EMPTY
-            return FluidEssence.toStack(this.tile.typeEssence, this.tile.amount)
+            return this.tile.typeEssence.toStack(this.tile.amount)
         }
 
         override fun getTankCapacity(slot: Int): Int {
@@ -128,6 +129,6 @@ interface ExtensionJarEssence {
         }
 
         override fun drain(amount: Int, action: IFluidHandler.FluidAction) =
-            this.drain(FluidEssence.toStack(this.tile.typeEssence, amount), action)
+            this.drain(this.tile.typeEssence.toStack(amount), action)
     }
 }

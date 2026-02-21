@@ -2,6 +2,7 @@ package com.fish.packaged_faa.mixin.core;
 
 import com.fish.packaged_faa.mixin.core.overrider.OverriderClibanoFrame;
 import com.fish.packaged_faa.mixin.extension.ExtensionClibanoHandler;
+import com.fish.packaged_faa.mixin.extension.HelperHandlerTransfer;
 import com.stal111.forbidden_arcanus.common.block.clibano.ClibanoCenterBlock;
 import com.stal111.forbidden_arcanus.common.block.entity.clibano.ClibanoFrameBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -20,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClibanoFrameBlockEntity.class)
 public class MixinClibanoFrameHandler extends BlockEntity implements ExtensionClibanoHandler {
     @Unique
-    private ExtensionClibanoHandler.HelperHandlerTransfer pfaa$helperTransfer;
+    private HelperHandlerTransfer pfaa$helperTransfer;
 
     public MixinClibanoFrameHandler(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
