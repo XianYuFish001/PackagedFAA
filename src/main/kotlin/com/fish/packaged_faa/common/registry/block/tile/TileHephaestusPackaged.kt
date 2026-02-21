@@ -336,7 +336,8 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
     private fun updateRitual(): Boolean {
         this.level?.registryAccess()?.let { this.saveChanges(it) }
 
-        val player = this.level?.getPlayerByUUID(this.ownerUUID) as? ServerPlayer ?: return false
+        val player = this.level?.getPlayerByUUID(this.ownerUUID ?: return false)
+                as? ServerPlayer ?: return false
         return this.managerRitual.startRitual(player, this.storageEssence)
     }
 
