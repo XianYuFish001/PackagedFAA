@@ -1,4 +1,4 @@
-package com.fish.packaged_faa.integration.impl
+package com.fish.packaged_faa.integration.impl.bean
 
 import appeng.api.crafting.IPatternDetails
 import appeng.api.features.IPlayerRegistry
@@ -9,7 +9,8 @@ import appeng.api.stacks.AEKey
 import appeng.core.network.clientbound.CraftingJobStatusPacket
 import appeng.me.cluster.implementations.CraftingCPUCluster
 import appeng.me.helpers.IGridConnectedBlockEntity
-import com.fish.packaged_faa.integration.IntegrationAE
+import com.fish.fishlib.integration.BeanIntegration
+import com.fish.packaged_faa.integration.impl.point.IntegrationAE
 import com.fish.packaged_faa.mixin.core.accessor.AccessorCraftingLogic
 import com.fish.packaged_faa.mixin.core.accessor.AccessorCraftingLogicAdv
 import com.fish.packaged_faa.mixin.helper.HelperCraftingJob
@@ -23,16 +24,15 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.network.PacketDistributor
 import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU
 
-class ImplIntegrationAE : IntegrationAE {
+@BeanIntegration("ae2")
+object ImplAE : IntegrationAE {
     override fun cancelTask(
         key: Any,
         level: ServerLevel,
         posDeviceNetworked: BlockPos,
         tip: Boolean
     ) = this.taskProcess(key, level, posDeviceNetworked, tip) { key, canceler, helper ->
-        val infoTask = helper.tasks
-
-        val progress = infoTask.entries
+        val progress = helper.tasks.entries
             .find { key.matches(it.key) }
             ?.value
             ?.value
@@ -48,9 +48,7 @@ class ImplIntegrationAE : IntegrationAE {
         posDeviceNetworked: BlockPos,
         tip: Boolean
     ) = this.taskProcess(key, level, posDeviceNetworked, tip) { key, canceler, helper ->
-        val infoTask = helper.waitingFor.list
-
-        if (infoTask.last().key != key) return@taskProcess
+        if (helper.waitingFor.list.lastOrNull()?.key != key) return@taskProcess
         canceler()
     }
 

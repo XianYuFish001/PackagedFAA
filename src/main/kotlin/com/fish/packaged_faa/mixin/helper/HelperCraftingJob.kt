@@ -11,7 +11,7 @@ interface HelperCraftingJob {
     val link: CraftingLink
     val outputFinal: GenericStack
     val amountRemaining: Long
-    val idPlayer: Integer?
+    val idPlayer: Int?
 
     interface HelperJobProgress {
         val value: Long

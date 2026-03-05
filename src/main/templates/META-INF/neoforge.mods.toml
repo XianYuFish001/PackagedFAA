@@ -34,3 +34,21 @@ modId = "kotlinforforge"
 type = "required"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "fishlib"
+type = "required"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "forbidden_arcanus"
+type = "required"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "packagedauto"
+type = "required"
+ordering = "AFTER"
+side = "BOTH"

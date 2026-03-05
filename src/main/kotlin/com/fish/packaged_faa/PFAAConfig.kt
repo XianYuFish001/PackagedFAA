@@ -1,42 +1,24 @@
 package com.fish.packaged_faa
 
+import com.fish.fishlib.common.InitObject
+import com.fish.fishlib.config.HelperConfig
+import com.fish.fishlib.config.HelperConfig.Companion.bind
+import com.fish.fishlib.config.spec
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.config.ModConfig
-import net.neoforged.neoforge.common.ModConfigSpec
 
 object PFAAConfig {
-    internal val specServer: Triple<ModConfig.Type, ModConfigSpec, String>
+    private val HelperServer: HelperConfig = HelperConfig(::SpecServer)
 
-    lateinit var soulExtractReturns: ModConfigSpec.BooleanValue
+    var SoulExtractReturns: Boolean by HelperServer
 
-    init {
-        this.specServer = this.spec("server", ModConfig.Type.SERVER) { spec ->
-            this.soulExtractReturns = spec.define("soul_extract_returns", false)
-        }
+    private val SpecServer by spec(ModConfig.Type.SERVER) { spec ->
+        spec.define("soul_extract_returns", false)
+            .bind(HelperServer, ::SoulExtractReturns)
     }
 
-    internal fun init(containerMod: ModContainer) {
-        containerMod.registerConfig(
-            specServer.first,
-            specServer.second,
-            "packaged_faa/${specServer.third}.toml"
-        )
-    }
-
-    private inline fun spec(
-        spec: String, type: ModConfig.Type, modifier: (ModConfigSpec.Builder) -> Unit
-    ): Triple<ModConfig.Type, ModConfigSpec, String> {
-        val builder = ModConfigSpec.Builder()
-        modifier(builder)
-        return Triple(type, builder.build(), spec)
-    }
-
-    private inline fun ModConfigSpec.Builder.section(
-        section: String, modifier: (ModConfigSpec.Builder) -> Unit
-    ): ModConfigSpec.Builder {
-        this.push(section)
-        modifier(this)
-        this.pop()
-        return this
+    @InitObject
+    private fun init(containerMod: ModContainer) {
+        HelperServer.init(containerMod)
     }
 }

@@ -7,7 +7,8 @@ import com.fish.packaged_faa.common.packagedAuto.recipe.InfoHephaestus
 import com.fish.packaged_faa.common.registry.PFAATags
 import com.fish.packaged_faa.common.registry.block.BlockHephaestusPackaged
 import com.fish.packaged_faa.common.registry.fluid.FluidEssence
-import com.fish.packaged_faa.integration.IntegrationAE
+import com.fish.packaged_faa.integration.helper.ManagerIntegration
+import com.fish.packaged_faa.integration.impl.point.IntegrationAE
 import com.fish.packaged_faa.mixin.extension.ExtensionManagerRitual.Companion.packaged
 import com.fish.packaged_faa.util.UtilKeyBuilder
 import com.fish.packaged_faa.util.flatStack
@@ -131,12 +132,12 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
             if (block is HephaestusForgeBlock) {
                 this.levelForge = block.level
 
+                val ae = ManagerIntegration<IntegrationAE>() ?: return
+
                 val level = this.level as? ServerLevel ?: return
-                val devices = IntegrationAE.instance.findDevice(
-                    this.blockPos, level
-                )
+                val devices = ae.findDevice(this.blockPos, level)
                 if (devices.isEmpty()) return
-                IntegrationAE.instance.cancelTaskInWaiting(stack, level, devices[0])
+                ae.cancelTaskInWaiting(stack, level, devices[0])
 
                 return
             }

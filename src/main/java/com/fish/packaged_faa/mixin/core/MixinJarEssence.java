@@ -81,7 +81,7 @@ public abstract class MixinJarEssence extends BlockEntity
         var stateSelected = level.getBlockState(posSelected);
         if (!(stateSelected.is(Blocks.SOUL_SAND) || stateSelected.is(Blocks.SOUL_SOIL))) return;
 
-        var block = PFAAConfig.soulExtractReturns.getAsBoolean()
+        var block = PFAAConfig.INSTANCE.getSoulExtractReturns()
                 ? ModBlocks.SOULLESS_SAND.get() : Blocks.AIR;
         level.setBlock(posSelected, block.defaultBlockState(), Block.UPDATE_CLIENTS);
 

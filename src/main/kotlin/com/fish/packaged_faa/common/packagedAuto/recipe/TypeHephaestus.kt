@@ -1,5 +1,6 @@
 package com.fish.packaged_faa.common.packagedAuto.recipe
 
+import com.fish.fishlib.util.keyBuilder.Patterns
 import com.fish.packaged_faa.PackagedFAA
 import com.fish.packaged_faa.common.init.PFAAItems
 import com.fish.packaged_faa.util.UtilKeyBuilder
@@ -133,7 +134,7 @@ class TypeHephaestus : IPackageRecipeType {
         internal val slotOutput = 81
 
         init {
-            val builderName = UtilKeyBuilder.of(UtilKeyBuilder.screenTooltip)
+            val builderName = UtilKeyBuilder.of(Patterns.ScreenTooltip)
                 .addStr("type_recipe")
                 .addStr("hephaestus")
             name = builderName.build()

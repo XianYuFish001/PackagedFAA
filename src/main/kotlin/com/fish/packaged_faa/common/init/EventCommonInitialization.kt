@@ -40,10 +40,6 @@ object EventCommonInitialization {
             ModBlockEntities.ESSENCE_UTREM_JAR.get()
         ) { tile, _ -> ExtensionJarEssence.WrapperHandlerFluid(tile) }
         event.registerBlockEntity(
-            Capabilities.FluidHandler.BLOCK,
-            PFAATiles.transmuterUtremJar.get()
-        ) { tile, _ -> tile }
-        event.registerBlockEntity(
             Capabilities.ItemHandler.BLOCK,
             ModBlockEntities.CLIBANO.get()
         ) { tile, _ -> tile.helperTransfer?.handlerItem() }

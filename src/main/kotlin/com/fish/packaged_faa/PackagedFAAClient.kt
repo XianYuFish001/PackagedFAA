@@ -9,7 +9,9 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory
 @Mod(PackagedFAA.MODID, dist = [Dist.CLIENT])
 class PackagedFAAClient(containerMod: ModContainer) {
     init {
-        containerMod.registerExtensionPoint(IConfigScreenFactory::class.java,
-            IConfigScreenFactory(::ConfigurationScreen))
+        containerMod.registerExtensionPoint(
+            IConfigScreenFactory::class.java,
+            IConfigScreenFactory(::ConfigurationScreen)
+        )
     }
 }

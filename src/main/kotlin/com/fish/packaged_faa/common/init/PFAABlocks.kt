@@ -1,5 +1,6 @@
 package com.fish.packaged_faa.common.init
 
+import com.fish.fishlib.common.InitObject
 import com.fish.packaged_faa.PackagedFAA
 import com.fish.packaged_faa.common.registry.block.BlockHephaestusPackaged
 import com.fish.packaged_faa.common.registry.block.BlockPedestalPackaged
@@ -10,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredRegister
 
 object PFAABlocks {
+    @InitObject
     val register: DeferredRegister.Blocks = DeferredRegister.Blocks.createBlocks(PackagedFAA.MODID)
 
     val hephaestusPackaged: DeferredBlock<BlockHephaestusPackaged> = register.registerBlock(

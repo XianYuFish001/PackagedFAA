@@ -1,5 +1,7 @@
 package com.fish.packaged_faa.common.init
 
+import com.fish.fishlib.common.InitObject
+import com.fish.fishlib.util.keyBuilder.toKeyPattern
 import com.fish.packaged_faa.PackagedFAA
 import com.fish.packaged_faa.common.registry.fluid.FluidEssence
 import com.fish.packaged_faa.util.UtilKeyBuilder
@@ -15,8 +17,10 @@ import java.util.concurrent.atomic.AtomicReference
 import java.util.function.Supplier
 
 object PFAAFluids {
+    @InitObject
     val registerType: DeferredRegister<FluidType> =
         DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, PackagedFAA.MODID)
+    @InitObject
     val registerFluid: DeferredRegister<Fluid> =
         DeferredRegister.create(Registries.FLUID, PackagedFAA.MODID)
 
@@ -33,34 +37,34 @@ object PFAAFluids {
     val fluidExperience = regFluidVirtual("fluid_experience", typeExperience, FluidEssence.constructor(EssenceType.EXPERIENCE))
 
     private fun regType(name: String): DeferredHolder<FluidType, FluidType> {
-        return registerType.register(name, Supplier {
+        return registerType.register(name) { ->
             FluidType(
                 FluidType.Properties.create()
                     .descriptionId(
-                        UtilKeyBuilder.of("fluid.type.%s%s")
+                        UtilKeyBuilder.of("fluid.type.%s%s".toKeyPattern())
                             .addStr(name)
                             .buildRaw()
                     )
             )
-        })
+        }
     }
 
     private fun <T : Fluid> regFluidVirtual(
         name: String, type: Supplier<FluidType>, constructor: (Boolean, BaseFlowingFluid.Properties) -> T
     ): Pair<DeferredHolder<Fluid, T>, DeferredHolder<Fluid, T>> {
         val properties: AtomicReference<BaseFlowingFluid.Properties?> = AtomicReference(null)
-        val source = registerFluid.register(
-            name,
-            Supplier { constructor(true, properties.get() as BaseFlowingFluid.Properties) })
+        val source = registerFluid.register(name) { ->
+            constructor(true, properties.get() as BaseFlowingFluid.Properties)
+        }
         val flowing = registerFluid.register(
-            name + "flowing",
-            Supplier { constructor(false, properties.get() as BaseFlowingFluid.Properties) })
+            name + "flowing"
+        ) { -> constructor(false, properties.get() as BaseFlowingFluid.Properties) }
         properties.set(
             BaseFlowingFluid.Properties(
                 type, source, flowing
             )
         )
-        this.fluids.add(source)
-        return Pair(source, flowing)
+        this.fluids += source
+        return source to flowing
     }
 }

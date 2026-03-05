@@ -1,5 +1,6 @@
 package com.fish.packaged_faa.common.init
 
+import com.fish.fishlib.common.InitObject
 import com.fish.packaged_faa.PackagedFAA
 import com.fish.packaged_faa.common.registry.block.BlockHephaestusPackaged
 import com.mojang.serialization.Codec
@@ -11,6 +12,7 @@ import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredRegister
 
 object PFAADataComponents {
+    @InitObject
     val register: DeferredRegister.DataComponents =
         DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, PackagedFAA.MODID)
 
@@ -22,8 +24,7 @@ object PFAADataComponents {
 
     private fun <T> register(
         name: String, codec: Codec<T>?, streamCodec: StreamCodec<RegistryFriendlyByteBuf, T>?
-    ): DeferredHolder<DataComponentType<*>, DataComponentType<T>> {
-        return register.registerComponentType<T>(name)
-        { it.persistent(codec).networkSynchronized(streamCodec) }
+    ): DeferredHolder<DataComponentType<*>, DataComponentType<T>> = register.registerComponentType<T>(name) {
+        it.persistent(codec).networkSynchronized(streamCodec)
     }
 }
