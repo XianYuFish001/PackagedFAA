@@ -1,6 +1,8 @@
 dependencies {
     jarJar libs.fishLib
-    implementation libs.fishLib
+    implementation(libs.fishLib) {
+        transitive = false
+    }
 
     implementation libs.kotlinForForge
     implementation libs.ae2

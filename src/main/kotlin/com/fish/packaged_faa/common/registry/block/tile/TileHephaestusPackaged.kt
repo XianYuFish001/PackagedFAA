@@ -1,5 +1,9 @@
 package com.fish.packaged_faa.common.registry.block.tile
 
+import com.fish.fishlib.util.extension.ifNull
+import com.fish.fishlib.util.extension.invoke
+import com.fish.fishlib.util.extension.onlyIf
+import com.fish.packaged_faa.PFAAConfig
 import com.fish.packaged_faa.common.init.PFAABlocks
 import com.fish.packaged_faa.common.init.PFAAItems
 import com.fish.packaged_faa.common.init.PFAATiles
@@ -34,7 +38,6 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
@@ -44,12 +47,15 @@ import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.items.ItemHandlerHelper
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import thelm.packagedauto.api.IPackageCraftingMachine
 import thelm.packagedauto.api.IPackageRecipeInfo
 import thelm.packagedauto.block.PackagedAutoBlocks
 import thelm.packagedauto.block.entity.BaseBlockEntity
 import thelm.packagedauto.inventory.BaseItemHandler
 import thelm.packagedauto.util.MiscHelper
+import kotlin.jvm.optionals.getOrNull
 
 class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity(
     PFAATiles.hephaestusPackaged.get(), pos, state
@@ -111,8 +117,7 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
     }
 
     fun tickServer() {
-        val result = this.managerRitual.tick()
-        if (result.isEmpty) return
+        val result = this.managerRitual.tick().getOrNull() ?: return
 
         this.working = false
         this.recipe = null
@@ -124,11 +129,9 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
 
         this.pedestals.forEach { it.stack = ItemStack.EMPTY }
 
-        val stack = result.get()
-        if (stack.isEmpty) return
-
-        if (stack.item is BlockItem) {
-            val block = (stack.item as BlockItem).block
+        if (result.isEmpty) return
+        if (result.item is BlockItem) {
+            val block = (result.item as BlockItem).block
             if (block is HephaestusForgeBlock) {
                 this.levelForge = block.level
 
@@ -137,13 +140,13 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
                 val level = this.level as? ServerLevel ?: return
                 val devices = ae.findDevice(this.blockPos, level)
                 if (devices.isEmpty()) return
-                ae.cancelTaskInWaiting(stack, level, devices[0])
+                ae.cancelTaskInWaiting(result, level, devices[0])
 
                 return
             }
         }
 
-        ItemHandlerHelper.insertItem(this.handlerItem, stack, false)
+        ItemHandlerHelper.insertItem(this.handlerItem, result, false)
         this.ejectItem()
 
         this.setChanged()
@@ -267,12 +270,14 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
         if (infoRecipe !is InfoHephaestus) return false
         if (this.isBusy || this.recipe != null) return false
 
-        if (infoRecipe.outputs[0].item == PFAAItems.hephaestusPackaged.get()) return false
+        if (infoRecipe.outputs[0].item == PFAAItems.hephaestusPackaged()) return false
 
         if (!this.placeStack(stacks)) return false
         if (!this.updateRitual()) {
+            Logger?.debug("[Check 3/3] First try failed")
             this.collectEssence()
             if (!this.updateRitual()) {
+                Logger?.debug("[Check 3/3] Second try failed")
                 this.pedestals.forEach { it.stack = ItemStack.EMPTY }
                 return false
             }
@@ -295,7 +300,10 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
     private fun placeStack(stacks: List<ItemStack>): Boolean {
         this.inputMain = stacks[0]
         val stacks = stacks.subList(1, stacks.size).flatStack()
-        if (stacks.size > this.pedestals.size) return false
+        if (stacks.size > this.pedestals.size) {
+            Logger?.debug("[Check 1/3][Precheck] No enough pedestals({}/{})", this.pedestals.size, stacks.size)
+            return false
+        }
 
         this.cacheData = ForgeDataCache(
             ArrayList(),
@@ -304,7 +312,10 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
         )
         val iteratorPedestals = this.pedestals.iterator()
         stacks.forEach { stack ->
-            if (!iteratorPedestals.hasNext()) return false
+            if (!iteratorPedestals.hasNext()) {
+                Logger?.debug("[Check 1/3][Executing] No enough pedestals")
+                return false
+            }
             val pedestal = iteratorPedestals.next()
             this.cacheData.setIngredient(pedestal.blockPos, stack)
             pedestal.stack = stack
@@ -319,17 +330,32 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
             Capabilities.FluidHandler.BLOCK,
             posTarget,
             side.opposite
-        ) ?: return@forEach
+        ).ifNull {
+            Logger?.debug("[Check 2/3][Precheck] Side {} with no fluidHandler", side.serializedName)
+            return@forEach
+        }
 
         val drained = ArrayList<FluidStack>()
         for (indexSlot in 0 until handlerFluid.tanks) {
             val stack = handlerFluid.getFluidInTank(indexSlot)
-            if (stack.isEmpty) continue
-            if (PFAATags.Fluid.essences.none(stack::`is`)) continue
-            if ((this.storageEssence[FluidEssence.fromStack(stack, false)?.first ?: continue] ?: 0)
-                + stack.amount
-                >= this.limitEssence) continue
+            if (stack.isEmpty) {
+                Logger?.debug("[Check 2/3][Executing] Tank {} is empty", indexSlot)
+                continue
+            }
+            if (PFAATags.Fluid.essences.none(stack::`is`)) {
+                Logger?.debug("[Check 2/3][Executing] Tank {} with wrong fluid", indexSlot)
+                continue
+            }
+            if (
+                (this.storageEssence[
+                    FluidEssence
+                        .fromStack(stack, false)
+                        ?.first
+                        ?: continue
+                ] ?: 0) >= this.limitEssence
+            ) continue
             drained.add(handlerFluid.drain(stack, IFluidHandler.FluidAction.EXECUTE))
+            Logger?.debug("[Check 2/3][Executing] Drained {}", drained.lastOrNull())
         }
         FluidEssence.fromStack(drained, this.storageEssence, true)
     }
@@ -337,8 +363,10 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
     private fun updateRitual(): Boolean {
         this.level?.registryAccess()?.let { this.saveChanges(it) }
 
-        val player = this.level?.getPlayerByUUID(this.ownerUUID ?: return false)
-                as? ServerPlayer ?: return false
+        val player = this.level?.getPlayerByUUID(this.ownerUUID.ifNull {
+            Logger?.debug("[Check 3/3][Precheck] Null uuid")
+            return false
+        }) as? ServerPlayer ?: return false
         return this.managerRitual.startRitual(player, this.storageEssence)
     }
 
@@ -416,5 +444,10 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
 
     override fun getDefaultName() = UtilKeyBuilder.of(PFAABlocks.hephaestusPackaged).build()
 
-    override fun createMenu(p0: Int, p1: Inventory, p2: Player): AbstractContainerMenu? = null
+    override fun createMenu(p0: Int, p1: Inventory, p2: Player) = null
+
+    companion object {
+        private var Logger: Logger? = LoggerFactory.getLogger("PFAA/HephaestusPackaged")
+            get() = field.onlyIf { PFAAConfig.LoggedHephaestus }
+    }
 }
