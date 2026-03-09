@@ -88,7 +88,6 @@ interface ExtensionJarEssence {
     }
 
     class WrapperHandlerFluid(private val tile: EssenceUtremJarBlockEntity) : IFluidHandler {
-
         override fun getTanks() = 1
 
         override fun getFluidInTank(slot: Int): FluidStack {

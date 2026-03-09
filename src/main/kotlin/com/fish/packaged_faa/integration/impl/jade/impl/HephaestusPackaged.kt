@@ -3,12 +3,14 @@ package com.fish.packaged_faa.integration.impl.jade.impl
 import com.fish.fishlib.integration.jade.IObjectedAppenderBlock
 import com.fish.fishlib.integration.jade.IObjectedProvider
 import com.fish.fishlib.integration.jade.TooltipAppender
+import com.fish.fishlib.util.extension.tryCast
 import com.fish.fishlib.util.keyBuilder.Patterns
 import com.fish.fishlib.util.keyBuilder.collection
 import com.fish.fishlib.util.keyBuilder.newArrayList
 import com.fish.packaged_faa.PackagedFAA
 import com.fish.packaged_faa.common.registry.block.BlockHephaestusPackaged
 import com.fish.packaged_faa.common.registry.block.tile.TileHephaestusPackaged
+import com.fish.packaged_faa.integration.impl.jade.ContainerLog
 import com.fish.packaged_faa.util.UtilKeyBuilder
 import com.fish.packaged_faa.util.ifNotEmpty
 import com.stal111.forbidden_arcanus.common.block.entity.forge.essence.EssenceType
@@ -47,6 +49,9 @@ object HephaestusPackaged {
                 .map { StringTag.valueOf(it) }
                 .forEach { dataList.add(it) }
             data.put("list", dataList)
+        }),
+        Log(ContainerLog.provider {
+            it.tryCast<TileHephaestusPackaged>()?.containerLog
         })
     }
 
@@ -89,7 +94,8 @@ object HephaestusPackaged {
                 }.forEach {
                     tooltip.add(Component.literal("- ${it.asString}"))
                 }
-        });
+        }),
+        Log(ContainerLog.tooltip);
 
         override val id = PackagedFAA.getLocation("hephaestus.${this.name.lowercase()}")
     }

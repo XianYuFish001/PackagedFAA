@@ -43,11 +43,41 @@ class LangEN(output: PackOutput) : LanguageProvider(output, PackagedFAA.MODID, "
             .branch("souls", "- Souls %s")
             .branch("experience", "- Experience %s")
             .buildInto("Essences:")
+        UtilKeyBuilder.dataGen(Patterns.JadeInfo)
+            .addStr("log")
+            .branch("idle", "Idle")
+            .section("hephaestus_packaged") { it
+                .section("0") { it
+                    .branch("pre", "[Precheck] Pedestals are not enough (%s/%s)")
+                    .branch("exec", "[Executing] Pedestals are not enough")
+                }
+                .section("1") { it
+                    .branch("pre.uuid", "[Precheck] Stored UUID is null, replace forge")
+                    .buildInto("[Executing] Ritual failed (First)")
+                }
+                .section("2") { it
+                    .branch("pre", "[Precheck] Block{%s} with no FluidHandler")
+                    .section("exec") { it
+                        .branch("empty", "[Executing] Tank{%s} with empty fluid")
+                        .branch("wrong", "[Executing] Tank{%s} with wrong fluid")
+                    }
+                }
+                .branch("3", "[Executing] Ritual failed (Second)")
+                .section("internal") { it
+                    .branch("essence", "[Executing] Insufficient essences")
+                    .branch("tier", "[Executing] Tier is not within bounds] ")
+                    .branch("enhancer", "[Executing] Missing enhancer")
+                }
+            }
 
         UtilKeyBuilder.dataGen(Patterns.Config)
             .addStr("soul_extract_returns")
             .branch("tooltip", "Controls whether jar will leave Soulless Sand behind when absorbing Soul Sand/Soil around them.")
             .buildInto("Soul Extract Returns")
+        UtilKeyBuilder.dataGen(Patterns.Config)
+            .addStr("logged_hephaestus")
+            .branch("tooltip", "Controls whether Forge writes the reason for packaged receiving failure to DebugLog \nTips: May pollute the log, enable with caution")
+            .buildInto("Logged Hephaestus Running")
     }
 
     override fun addTranslations() {
