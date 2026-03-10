@@ -78,5 +78,17 @@ class LangEN(output: PackOutput) : LanguageProvider(output, PackagedFAA.MODID, "
             .addStr("logged_hephaestus")
             .branch("tooltip", "Controls whether Forge writes the reason for packaged receiving failure to DebugLog \nTips: May pollute the log, enable with caution")
             .buildInto("Logged Hephaestus Running")
+        UtilKeyBuilder.dataGen(Patterns.Config)
+            .addStr("frequency_essence_collect")
+            .branch("tooltip", "Control the tick interval between two essence collection\n0 means no collection")
+            .buildInto("Essence Collect Frequency")
+        UtilKeyBuilder.dataGen(Patterns.Config)
+            .branch("aureal", "Aureal")
+            .branch("souls", "Souls")
+            .branch("blood", "Blood")
+            .branch("experience", "Experience")
+            .addStr("factor")
+            .branch("tooltip", "Controls the essence value each jar collection")
+            .buildInto("Essence Collection Factor")
     }
 }

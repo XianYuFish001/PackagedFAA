@@ -1,5 +1,6 @@
 package com.fish.packaged_faa.mixin.extension
 
+import com.fish.packaged_faa.PFAAConfig
 import com.fish.packaged_faa.common.registry.fluid.FluidEssence
 import com.fish.packaged_faa.common.registry.fluid.FluidEssence.Companion.toStack
 import com.stal111.forbidden_arcanus.common.block.entity.EssenceUtremJarBlockEntity
@@ -70,16 +71,19 @@ interface ExtensionJarEssence {
             context: GameEvent.Context,
             pos: Vec3
         ): Boolean {
+            if (PFAAConfig.FactorBlood == 0) return false
+
             if (!holderEvent.`is`(GameEvent.ENTITY_DIE.key!!)) return false
             if (!this.entityValid(context.sourceEntity)) return false
             if (this.consumed.contains(pos)) return false
 
-            val health = ((context.sourceEntity as? LivingEntity)?.maxHealth ?: 5F) * 20
+            val health = ((context.sourceEntity as? LivingEntity)?.maxHealth ?: 5F) *
+                    PFAAConfig.FactorBlood
             if (!this.tile.addEssenceUpdated(
                     EssenceType.BLOOD, health.toInt()
             )) return false
 
-            this.consumed.add(pos)
+            this.consumed += pos
             return true
         }
 

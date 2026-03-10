@@ -27,10 +27,18 @@
   "jade.info.packaged_faa.log.hephaestus_packaged.internal.essence": "[执行] 精华不足",
   "jade.info.packaged_faa.log.hephaestus_packaged.internal.tier": "[执行] 锻炉等级不匹配",
   "jade.info.packaged_faa.log.idle": "锻炉运转正常",
+  "packaged_faa.configuration.aureal": "耀金",
+  "packaged_faa.configuration.blood": "血",
+  "packaged_faa.configuration.experience": "经验",
+  "packaged_faa.configuration.factor": "精华转化因子",
+  "packaged_faa.configuration.factor.tooltip": "控制精华收集时由对应数值转为精华值的倍数",
+  "packaged_faa.configuration.frequency_essence_collect": "精华收集频率",
+  "packaged_faa.configuration.frequency_essence_collect.tooltip": "控制两次精华收集间隔的游戏刻\n0代表不进行尝试",
   "packaged_faa.configuration.logged_hephaestus": "锻炉发配日志",
   "packaged_faa.configuration.logged_hephaestus.tooltip": "控制锻炉是否将封包发配失败原因写入DebugLog \n注意: 污染日志, 谨慎开启",
   "packaged_faa.configuration.soul_extract_returns": "灵魂提取返还",
   "packaged_faa.configuration.soul_extract_returns.tooltip": "控制瓶罐在通过吸取周围的灵魂沙/土获取灵魂时是否会留下失魂沙",
+  "packaged_faa.configuration.souls": "灵魂",
   "tooltip.screen.packaged_faa.type_recipe.hephaestus": "赫菲斯托斯锻造",
   "tooltip.screen.packaged_faa.type_recipe.hephaestus.short": "赫菲斯托斯锻造"
 }

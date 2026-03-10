@@ -59,15 +59,18 @@ public abstract class MixinJarEssence extends BlockEntity
 
     @Override
     public void pfaa$tickServer(@NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull BlockState state) {
-        if (this.pfaa$collectExp(level, pos, state)) return;
-        this.pfaa$collectSoul(level, pos, state);
+        var frequency = PFAAConfig.INSTANCE.getFrequencyEssenceCollect();
+        if (frequency == 0) return;
+        if (level.getGameTime() % frequency != 0) return;
+
+        if (this.pfaa$collectExp(level, pos)) return;
+        this.pfaa$collectSoul(level, pos);
     }
 
     @Unique
-    private void pfaa$collectSoul(@NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull BlockState state) {
+    private void pfaa$collectSoul(@NotNull ServerLevel level, @NotNull BlockPos pos) {
         if (ExtensionJarEssence.Companion.getTypeEssence(
                 (EssenceUtremJarBlockEntity)(Object) this) != EssenceType.SOULS) return;
-        if (level.getGameTime() % 10 != 0) return;
 
         if (this.pfaa$areaSoul.isEmpty()) {
             BlockPos.betweenClosed(
@@ -85,9 +88,11 @@ public abstract class MixinJarEssence extends BlockEntity
                 ? ModBlocks.SOULLESS_SAND.get() : Blocks.AIR;
         level.setBlock(posSelected, block.defaultBlockState(), Block.UPDATE_CLIENTS);
 
-        this.addEssence(4);
-        assert this.level != null;
-        this.level.sendBlockUpdated(
+        var value = PFAAConfig.INSTANCE.getFactorSouls();
+        if (value == 0) return;
+        this.addEssence(value);
+
+        level.sendBlockUpdated(
                 this.getBlockPos(),
                 this.getBlockState(),
                 this.getBlockState(),
@@ -96,10 +101,9 @@ public abstract class MixinJarEssence extends BlockEntity
     }
 
     @Unique
-    private boolean pfaa$collectExp(@NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull BlockState state) {
+    private boolean pfaa$collectExp(@NotNull ServerLevel level, @NotNull BlockPos pos) {
         if (ExtensionJarEssence.Companion.getTypeEssence(
                 (EssenceUtremJarBlockEntity)(Object) this) != EssenceType.EXPERIENCE) return false;
-        if (level.getGameTime() % 10 != 0) return false;
 
         if (this.pfaa$areaExperience == null) {
             var posStart = pos.offset(-2, -2, -2);
@@ -114,12 +118,12 @@ public abstract class MixinJarEssence extends BlockEntity
                 level.getEntitiesOfClass(ExperienceOrb.class, this.pfaa$areaExperience);
 
         for (ExperienceOrb experienceOrb : experiences) {
-            int orbValue = experienceOrb.getValue() * 2;
+            var orbValue = experienceOrb.getValue() * PFAAConfig.INSTANCE.getFactorExperience();
+            if (orbValue == 0) return false;
             this.addEssence(orbValue);
             experienceOrb.discard();
         }
-        assert this.level != null;
-        this.level.sendBlockUpdated(
+        level.sendBlockUpdated(
                 this.getBlockPos(),
                 this.getBlockState(),
                 this.getBlockState(),

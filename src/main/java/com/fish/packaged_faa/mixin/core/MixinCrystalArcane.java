@@ -1,9 +1,12 @@
 package com.fish.packaged_faa.mixin.core;
 
+import com.fish.packaged_faa.PFAAConfig;
 import com.fish.packaged_faa.common.init.PFAAFluids;
+import com.fish.packaged_faa.common.registry.fluid.FluidEssence;
 import com.fish.packaged_faa.mixin.core.overrider.OverriderCrystalArcane;
 import com.fish.packaged_faa.mixin.extension.ExtensionTankCrystal;
 import com.stal111.forbidden_arcanus.common.block.entity.ArcaneCrystalObeliskBlockEntity;
+import com.stal111.forbidden_arcanus.common.block.entity.forge.essence.EssenceType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
@@ -75,8 +77,10 @@ public class MixinCrystalArcane extends BlockEntity implements ExtensionTankCrys
             return;
         }
 
-        ExtensionTankCrystal.Companion.getTankAureal(blockEntity)
-                .fill(new FluidStack(PFAAFluids.INSTANCE.getFluidAureal().getFirst().get(), 4),
-                        IFluidHandler.FluidAction.EXECUTE);
+        var value = PFAAConfig.INSTANCE.getFactorAureal();
+        if (value == 0) return;
+        ExtensionTankCrystal.Companion.getTankAureal(blockEntity).fill(
+                FluidEssence.Companion.toStack(EssenceType.AUREAL, value),
+                IFluidHandler.FluidAction.EXECUTE);
     }
 }

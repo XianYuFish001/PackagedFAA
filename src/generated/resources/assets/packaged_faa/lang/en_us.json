@@ -28,10 +28,18 @@
   "jade.info.packaged_faa.log.hephaestus_packaged.internal.essence": "[Executing] Insufficient essences",
   "jade.info.packaged_faa.log.hephaestus_packaged.internal.tier": "[Executing] Tier is not within bounds] ",
   "jade.info.packaged_faa.log.idle": "Idle",
+  "packaged_faa.configuration.aureal": "Aureal",
+  "packaged_faa.configuration.blood": "Blood",
+  "packaged_faa.configuration.experience": "Experience",
+  "packaged_faa.configuration.factor": "Essence Collection Factor",
+  "packaged_faa.configuration.factor.tooltip": "Controls the essence value each jar collection",
+  "packaged_faa.configuration.frequency_essence_collect": "Essence Collect Frequency",
+  "packaged_faa.configuration.frequency_essence_collect.tooltip": "Control the tick interval between two essence collection\n0 means no collection",
   "packaged_faa.configuration.logged_hephaestus": "Logged Hephaestus Running",
   "packaged_faa.configuration.logged_hephaestus.tooltip": "Controls whether Forge writes the reason for packaged receiving failure to DebugLog \nTips: May pollute the log, enable with caution",
   "packaged_faa.configuration.soul_extract_returns": "Soul Extract Returns",
   "packaged_faa.configuration.soul_extract_returns.tooltip": "Controls whether jar will leave Soulless Sand behind when absorbing Soul Sand/Soil around them.",
+  "packaged_faa.configuration.souls": "Souls",
   "tooltip.screen.packaged_faa.type_recipe.hephaestus": "Hephaestus Smithing",
   "tooltip.screen.packaged_faa.type_recipe.hephaestus.short": "Hephaestus Smithing"
 }

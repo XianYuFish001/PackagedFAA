@@ -78,5 +78,17 @@ class LangZH(output: PackOutput) : LanguageProvider(output, PackagedFAA.MODID, "
             .addStr("logged_hephaestus")
             .branch("tooltip", "控制锻炉是否将封包发配失败原因写入DebugLog \n注意: 污染日志, 谨慎开启")
             .buildInto("锻炉发配日志")
+        UtilKeyBuilder.dataGen(Patterns.Config)
+            .addStr("frequency_essence_collect")
+            .branch("tooltip", "控制两次精华收集间隔的游戏刻\n0代表不进行尝试")
+            .buildInto("精华收集频率")
+        UtilKeyBuilder.dataGen(Patterns.Config)
+            .branch("aureal", "耀金")
+            .branch("souls", "灵魂")
+            .branch("blood", "血")
+            .branch("experience", "经验")
+            .addStr("factor")
+            .branch("tooltip", "控制精华收集时由对应数值转为精华值的倍数")
+            .buildInto("精华转化因子")
     }
 }
