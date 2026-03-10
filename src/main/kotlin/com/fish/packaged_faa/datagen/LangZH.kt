@@ -10,7 +10,7 @@ import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.common.data.LanguageProvider
 
 class LangZH(output: PackOutput) : LanguageProvider(output, PackagedFAA.MODID, "zh_cn") {
-    private fun doBuild() {
+    override fun addTranslations() = ContainerDataGen.with("zh_cn", this::add) {
         this.addBlock(PFAABlocks.hephaestusPackaged, "封包赫菲斯托斯锻炉")
         this.addBlock(PFAABlocks.pedestalPackaged, "封包基座")
 
@@ -78,11 +78,5 @@ class LangZH(output: PackOutput) : LanguageProvider(output, PackagedFAA.MODID, "
             .addStr("logged_hephaestus")
             .branch("tooltip", "控制锻炉是否将封包发配失败原因写入DebugLog \n注意: 污染日志, 谨慎开启")
             .buildInto("锻炉发配日志")
-    }
-
-    override fun addTranslations() {
-        ContainerDataGen.bind("zh_cn", this::add)
-        this.doBuild()
-        ContainerDataGen.destroy("zh_ch")
     }
 }

@@ -29,7 +29,7 @@ packagedAuto = "4.0.8.21"
 forbiddenArcanus = "6875895"
 forbiddenArcanusSource = "2.6.1fix"
 valhelsiaCore = "6296775"
-fishLib = "1.0.5"
+fishLib = "1.0.6"
 
 [libraries]
 fishLib = { group = "com.fish.fishlib", name = "FishLib", version.ref = "fishLib" }

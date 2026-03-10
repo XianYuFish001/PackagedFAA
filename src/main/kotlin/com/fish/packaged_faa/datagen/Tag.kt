@@ -1,5 +1,6 @@
 package com.fish.packaged_faa.datagen
 
+import com.fish.fishlib.util.extension.invoke
 import com.fish.packaged_faa.PackagedFAA
 import com.fish.packaged_faa.common.init.PFAABlocks
 import com.fish.packaged_faa.common.init.PFAAFluids
@@ -32,8 +33,8 @@ internal object Tag {
     ) : BlockTagsProvider(output, provider, PackagedFAA.MODID, helperExisting) {
         override fun addTags(provider: HolderLookup.Provider) {
             this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
-                PFAABlocks.hephaestusPackaged.get(),
-                PFAABlocks.pedestalPackaged.get()
+                PFAABlocks.hephaestusPackaged(),
+                PFAABlocks.pedestalPackaged()
             )
         }
     }
@@ -44,10 +45,10 @@ internal object Tag {
         helperExisting: ExistingFileHelper
     ) : FluidTagsProvider(output, provider, PackagedFAA.MODID, helperExisting) {
         override fun addTags(provider: HolderLookup.Provider) {
-            this.tag(PFAATags.Fluid.aureal).add(PFAAFluids.fluidAureal.first.get())
-            this.tag(PFAATags.Fluid.blood).add(PFAAFluids.fluidBlood.first.get())
-            this.tag(PFAATags.Fluid.souls).add(PFAAFluids.fluidSouls.first.get())
-            this.tag(PFAATags.Fluid.experience).add(PFAAFluids.fluidExperience.first.get())
+            this.tag(PFAATags.Fluid.aureal).add(PFAAFluids.fluidAureal.first())
+            this.tag(PFAATags.Fluid.blood).add(PFAAFluids.fluidBlood.first())
+            this.tag(PFAATags.Fluid.souls).add(PFAAFluids.fluidSouls.first())
+            this.tag(PFAATags.Fluid.experience).add(PFAAFluids.fluidExperience.first())
         }
     }
 }

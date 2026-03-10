@@ -10,7 +10,7 @@ import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.common.data.LanguageProvider
 
 class LangEN(output: PackOutput) : LanguageProvider(output, PackagedFAA.MODID, "en_us") {
-    private fun doBuild() {
+    override fun addTranslations() = ContainerDataGen.with("en_us", this::add) {
         this.addBlock(PFAABlocks.hephaestusPackaged, "Packaged Hephaestus Forge")
         this.addBlock(PFAABlocks.pedestalPackaged, "Packaged Pedestal")
 
@@ -78,11 +78,5 @@ class LangEN(output: PackOutput) : LanguageProvider(output, PackagedFAA.MODID, "
             .addStr("logged_hephaestus")
             .branch("tooltip", "Controls whether Forge writes the reason for packaged receiving failure to DebugLog \nTips: May pollute the log, enable with caution")
             .buildInto("Logged Hephaestus Running")
-    }
-
-    override fun addTranslations() {
-        ContainerDataGen.bind("en_us", this::add)
-        this.doBuild()
-        ContainerDataGen.destroy("en_us")
     }
 }

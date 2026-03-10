@@ -22,16 +22,16 @@ class InfoHephaestus(inputMain: ItemStack, inputs: List<ItemStack>, private val 
 
     init {
         inputs
-            .mapIndexed { index, stack -> Pair(index, stack) }
+            .mapIndexed(::Pair)
             .toMap()
             .filter { !it.value.isEmpty }
             .forEach { (index, stack) ->
-                this.inputs.add(stack)
-                this.matrix.put(index, stack)
+                this.inputs += stack
+                this.matrix[index] = stack
             }
 
         this.inputs.addFirst(inputMain)
-        this.matrix.put(TypeHephaestus.slotForge, inputMain)
+        this.matrix[TypeHephaestus.slotForge] = inputMain
 
         var indexPart = 0
         while (indexPart * 9 < this.inputs.size) {
@@ -55,22 +55,26 @@ class InfoHephaestus(inputMain: ItemStack, inputs: List<ItemStack>, private val 
     override fun getEncoderStacks(): Int2ObjectMap<ItemStack> {
         val mapStacks = Int2ObjectOpenHashMap<ItemStack>()
 
-        mapStacks.put(TypeHephaestus.slotForge, this.inputs[0])
+        mapStacks[TypeHephaestus.slotForge] = this.inputs[0]
 
         val iteratorPedestal = TypeHephaestus.slotsPedestal.iterator()
         this.inputs.subList(1, this.inputs.size).forEach {
             if (!iteratorPedestal.hasNext()) return@forEach
-            mapStacks.put(iteratorPedestal.nextInt(), it)
+            mapStacks[iteratorPedestal.nextInt()] = it
         }
 
-        mapStacks.put(81, this.output)
+        mapStacks[81] = this.output
 
         return mapStacks
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other !is IPackageRecipeInfo) return false
-        return MiscHelper.INSTANCE.recipeEquals(this, null, other, null)
+        return MiscHelper.INSTANCE.recipeEquals(
+            this,
+            null,
+            other as? IPackageRecipeInfo ?: return false,
+            null
+        )
     }
     override fun hashCode() = MiscHelper.INSTANCE.recipeHashCode(this, null)
 

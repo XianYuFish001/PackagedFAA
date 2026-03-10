@@ -13,9 +13,9 @@ object PFAATags {
         val souls = this.create("souls")
         val essences = listOf(experience, blood, aureal, souls)
 
-        private fun create(name: String) =
+        private fun create(name: String): TagKey<net.minecraft.world.level.material.Fluid> =
             FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", name))
     }
 
-    fun <T> matches(matcher: (TagKey<T>) -> Boolean, vararg tags: TagKey<T>) = tags.any(matcher)
+    fun <T> matches(vararg tags: TagKey<T>, matcher: (TagKey<T>) -> Boolean) = tags.any(matcher)
 }

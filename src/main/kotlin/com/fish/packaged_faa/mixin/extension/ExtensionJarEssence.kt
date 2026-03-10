@@ -36,6 +36,7 @@ interface ExtensionJarEssence {
             }
 
         fun EssenceUtremJarBlockEntity.addEssenceUpdated(type: EssenceType? = null, amount: Int): Boolean {
+            if (type != null && this.typeEssence != type) return false
             this.addEssence(amount)
             this.level?.sendBlockUpdated(
                 this.blockPos,
