@@ -52,4 +52,4 @@
   - Experience / 经验
     - Experience jars will regularly absorb the surrounding experience orbs within a 5^3 range and convert them into `Fluid Experience`
       
-      经验瓶罐会定时吸收周围5^3范围内的经验球并将其转化为 `流体经验`
+      经验瓶罐会定时吸收周围9^3范围内的经验球并将其转化为 `流体经验`
