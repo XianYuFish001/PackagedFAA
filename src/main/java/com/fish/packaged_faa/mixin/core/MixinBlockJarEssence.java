@@ -7,7 +7,6 @@ import com.stal111.forbidden_arcanus.common.block.entity.EssenceUtremJarBlockEnt
 import com.stal111.forbidden_arcanus.common.block.entity.forge.essence.EssenceType;
 import com.stal111.forbidden_arcanus.common.block.properties.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -29,10 +28,9 @@ public class MixinBlockJarEssence {
                            BlockState var2,
                            BlockEntityType<BlockEntity> blockEntityType,
                            CallbackInfoReturnable<BlockEntityTicker<BlockEntity>> cir) {
-        if (var1.isClientSide()) return;
         cir.setReturnValue((level, pos, state, tile) -> {
             if (!(tile instanceof ExtensionJarEssence extension)) return;
-            extension.pfaa$tickServer((ServerLevel) level, pos, state);
+            extension.pfaa$tick(level, pos, state);
         });
     }
 

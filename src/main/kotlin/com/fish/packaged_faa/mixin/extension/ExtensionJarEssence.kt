@@ -1,27 +1,44 @@
+@file:Suppress("FunctionName")
+
 package com.fish.packaged_faa.mixin.extension
 
 import com.fish.packaged_faa.PFAAConfig
 import com.fish.packaged_faa.common.registry.fluid.FluidEssence
 import com.fish.packaged_faa.common.registry.fluid.FluidEssence.Companion.toStack
+import com.fish.packaged_faa.util.UtilAttraction
 import com.stal111.forbidden_arcanus.common.block.entity.EssenceUtremJarBlockEntity
 import com.stal111.forbidden_arcanus.common.block.entity.forge.essence.EssenceType
 import com.stal111.forbidden_arcanus.common.block.properties.ModBlockStateProperties
+import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Holder
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.ExperienceOrb
 import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.gameevent.BlockPositionSource
 import net.minecraft.world.level.gameevent.GameEvent
 import net.minecraft.world.level.gameevent.GameEventListener
+import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
+import java.lang.ref.WeakReference
+import java.util.function.Consumer
 
 interface ExtensionJarEssence {
     fun `pfaa$tickServer`(level: ServerLevel, pos: BlockPos, state: BlockState)
+
+    fun `pfaa$tickClient`(level: ClientLevel, pos: BlockPos, state: BlockState)
+
+    fun `pfaa$tick`(level: Level, pos: BlockPos, state: BlockState) = when (level) {
+        is ClientLevel -> this.`pfaa$tickClient`(level, pos, state)
+        is ServerLevel -> this.`pfaa$tickServer`(level, pos, state)
+        else -> Unit
+    }
 
     companion object {
         var EssenceUtremJarBlockEntity.typeEssence: EssenceType
@@ -90,6 +107,58 @@ interface ExtensionJarEssence {
         override fun getDeliveryMode() = GameEventListener.DeliveryMode.BY_DISTANCE
 
         private fun entityValid(entity: Entity?) = entity == null || entity is LivingEntity
+    }
+
+    class CollectorExperience(
+        private val action: Consumer<ExperienceOrb>
+    ) {
+        private val entities = ArrayList<WeakReference<ExperienceOrb>>()
+
+        fun tick(level: Level, pos: BlockPos): Boolean {
+            val frequency = PFAAConfig.FrequencyEssenceCollect
+            if (frequency == 0) return false
+            if (level.gameTime % frequency == 0L)
+                this.updateEntities(level, pos)
+
+            var collected = false
+            val iteratorEntities = this.entities.iterator()
+            while (iteratorEntities.hasNext()) {
+                val entity = iteratorEntities.next().get()
+                if (entity?.isRemoved ?: true) {
+                    iteratorEntities.remove()
+                    continue
+                }
+
+                if (!UtilAttraction.moveToPos(
+                        entity,
+                        pos,
+                        SPEED_VERTICAL,
+                        SPEED_HORIZONTAL,
+                        BOX
+                )) continue
+                if (level.isClientSide) continue
+                this.action.accept(entity)
+                collected = true
+            }
+            return collected
+        }
+
+        private fun updateEntities(level: Level, pos: BlockPos) = this.entities
+            .also(ArrayList<*>::clear)
+            .apply {
+                level.getEntitiesOfClass(
+                    ExperienceOrb::class.java,
+                    AABB(pos).inflate(4.0)
+                )
+                    .map(::WeakReference)
+                    .forEach(this::add)
+            }
+
+        companion object {
+            const val SPEED_VERTICAL = 0.025
+            const val SPEED_HORIZONTAL = SPEED_VERTICAL * 4
+            const val BOX = 1.0 * 1.0
+        }
     }
 
     class WrapperHandlerFluid(private val tile: EssenceUtremJarBlockEntity) : IFluidHandler {

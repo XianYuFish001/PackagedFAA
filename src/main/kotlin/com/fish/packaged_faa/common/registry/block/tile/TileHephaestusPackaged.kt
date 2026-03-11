@@ -141,8 +141,7 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
                 val ae = ManagerIntegration<IntegrationAE>() ?: return
 
                 val level = this.level as? ServerLevel ?: return
-                val devices = ae.findDevice(this.blockPos, level)
-                if (devices.isEmpty()) return
+                val devices = ae.findDevice(this.blockPos, level).ifEmpty { return }
                 ae.cancelTaskInWaiting(result, level, devices[0])
 
                 return

@@ -20,7 +20,8 @@ class PackagedFAA(eventBus: IEventBus, containerMod: ModContainer) {
     companion object {
         const val MODID = "packaged_faa"
 
-        fun getLocation(path: String): ResourceLocation = ResourceLocation.fromNamespaceAndPath(MODID, path)
+        fun getLocation(path: String): ResourceLocation =
+            ResourceLocation.fromNamespaceAndPath(MODID, path)
 
         fun String.location() = this@Companion.getLocation(this)
     }
