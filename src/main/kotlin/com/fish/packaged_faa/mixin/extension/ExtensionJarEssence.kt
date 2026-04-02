@@ -9,7 +9,6 @@ import com.fish.packaged_faa.util.UtilAttraction
 import com.stal111.forbidden_arcanus.common.block.entity.EssenceUtremJarBlockEntity
 import com.stal111.forbidden_arcanus.common.block.entity.forge.essence.EssenceType
 import com.stal111.forbidden_arcanus.common.block.properties.ModBlockStateProperties
-import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Holder
 import net.minecraft.server.level.ServerLevel
@@ -32,12 +31,11 @@ import java.util.function.Consumer
 interface ExtensionJarEssence {
     fun `pfaa$tickServer`(level: ServerLevel, pos: BlockPos, state: BlockState)
 
-    fun `pfaa$tickClient`(level: ClientLevel, pos: BlockPos, state: BlockState)
+    fun `pfaa$tickClient`(level: Level, pos: BlockPos, state: BlockState)
 
     fun `pfaa$tick`(level: Level, pos: BlockPos, state: BlockState) = when (level) {
-        is ClientLevel -> this.`pfaa$tickClient`(level, pos, state)
         is ServerLevel -> this.`pfaa$tickServer`(level, pos, state)
-        else -> Unit
+        else -> this.`pfaa$tickClient`(level, pos, state)
     }
 
     companion object {

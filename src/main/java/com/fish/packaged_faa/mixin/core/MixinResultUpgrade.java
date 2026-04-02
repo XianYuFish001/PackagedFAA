@@ -3,9 +3,7 @@ package com.fish.packaged_faa.mixin.core;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.stal111.forbidden_arcanus.common.block.entity.forge.ritual.result.UpgradeTierResult;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -26,10 +24,5 @@ public class MixinResultUpgrade {
         CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ExtraCodecs.intRange(-1, 5).fieldOf("result_tier").forGetter(UpgradeTierResult::resultTier)
         ).apply(instance, UpgradeTierResult::new));
-    }
-
-    @Inject(method = "executeLevelEffect", at = @At("HEAD"), cancellable = true)
-    private void executeLevelEffect(Level level, BlockPos pos, CallbackInfo ci) {
-        ci.cancel();
     }
 }

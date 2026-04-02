@@ -50,15 +50,13 @@ public class MixinManagerRitual implements ExtensionManagerRitual {
             at = @At(value = "INVOKE",
                     target = "Lcom/stal111/forbidden_arcanus/common/block/entity/forge/ritual/result/RitualResult;executeLevelEffect(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"))
     private void executeUpgrade(RitualResult instance, Level level, BlockPos pos, ActiveRitualData data) {
-        if (!(instance instanceof UpgradeTierResult(int resultTier))) {
+        if (!(instance instanceof UpgradeTierResult(int resultTier)) || resultTier > 0) {
             instance.executeLevelEffect(level, pos);
             return;
         }
 
         if (!(level.getPlayerByUUID(data.getStartedBy())
                 instanceof ServerPlayer player)) return;
-
-        if (resultTier > 0) return;
 
         var state = level.getBlockState(pos);
         var block = state.getBlock();

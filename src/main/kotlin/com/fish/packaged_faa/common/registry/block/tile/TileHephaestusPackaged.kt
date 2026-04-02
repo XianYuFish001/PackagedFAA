@@ -3,6 +3,7 @@ package com.fish.packaged_faa.common.registry.block.tile
 import com.fish.fishlib.util.extension.invoke
 import com.fish.fishlib.util.extension.onlyIf
 import com.fish.fishlib.util.extension.orElseGet
+import com.fish.fishlib.util.extension.unit
 import com.fish.packaged_faa.PFAAConfig
 import com.fish.packaged_faa.common.init.PFAABlocks
 import com.fish.packaged_faa.common.init.PFAAItems
@@ -60,7 +61,7 @@ import thelm.packagedauto.util.MiscHelper
 import kotlin.jvm.optionals.getOrNull
 
 class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity(
-    PFAATiles.hephaestusPackaged.get(), pos, state
+    PFAATiles.hephaestusPackaged(), pos, state
 ), IPackageCraftingMachine {
     // Server
     private var cacheData = ForgeDataCache(ArrayList(), ItemStack.EMPTY, ArrayList(8))
@@ -84,6 +85,7 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
                 Block.UPDATE_CLIENTS
             )
         }
+    private var speed = false
 
     val containerLog = ContainerLog("hephaestus_packaged")
 
@@ -120,7 +122,7 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
     }
 
     fun tickServer() {
-        val result = this.managerRitual.tick().getOrNull() ?: return
+        val result = this.tickRitual() ?: return
 
         this.working = false
         this.recipe = null
@@ -160,34 +162,43 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
         )
     }
 
-    private fun ejectItem() {
-        if (this.isBusy) return
-        Direction.entries.forEach { side ->
-            val posTarget = this.blockPos.relative(side)
-
-            val block = this.level?.getBlockState(posTarget) ?: return@forEach
-            if (block.`is`(PackagedAutoBlocks.PACKAGER)) return@forEach
-
-            val handlerItem = this.level!!.getCapability(
-                Capabilities.ItemHandler.BLOCK,
-                posTarget,
-                side.opposite
-            ) ?: return@forEach
-
-            for (indexSlot in 0 until this.handlerItem.slots) {
-                val stack = this.handlerItem.getStackInSlot(indexSlot)
-                if (stack.isEmpty) continue
-                val remainder = ItemHandlerHelper.insertItem(handlerItem, stack, false)
-                this.handlerItem.setStackInSlot(indexSlot, remainder)
-            }
+    private fun tickRitual() = if (!this.speed)
+        this.managerRitual.tick()?.getOrNull()
+    else this.managerRitual.validRitual.getOrNull()?.value()?.let {
+        tick@ for (i in 0..it.duration) {
+            if (!this.managerRitual.isRitualActive) return@let null
+            return@let this.managerRitual
+                .tick()
+                .getOrNull()
+                .orElseGet { continue@tick }
         }
+        null
     }
 
+    private fun ejectItem() = Direction.entries.onlyIf { !this.isBusy }?.forEach { side ->
+        val posTarget = this.blockPos.relative(side)
+
+        val block = this.level?.getBlockState(posTarget) ?: return@forEach
+        if (block.`is`(PackagedAutoBlocks.PACKAGER)) return@forEach
+
+        val handlerItem = this.level!!.getCapability(
+            Capabilities.ItemHandler.BLOCK,
+            posTarget,
+            side.opposite
+        ) ?: return@forEach
+
+        for (indexSlot in 0 until this.handlerItem.slots) {
+            val stack = this.handlerItem.getStackInSlot(indexSlot)
+            if (stack.isEmpty) continue
+            val remainder = ItemHandlerHelper.insertItem(handlerItem, stack, false)
+            this.handlerItem.setStackInSlot(indexSlot, remainder)
+        }
+    }.unit()
+
     fun drop(result: MutableSet<ItemStack>) {
-        this.cacheData.enhancers()
+        this.cacheData.enhancers
             .map { it.value().displayItem.value().defaultInstance }
             .forEach(result::add)
-
 
         this.recipe ?: return
 
@@ -203,6 +214,7 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
             this.blockPos.offset(-3, 0, -3),
             this.blockPos.offset(3, 0, 3)
         )
+            .asSequence()
             .mapNotNull { this.level?.getBlockEntity(it) }
             .filterIsInstance<TilePedestalPackaged>()
             .filter { it.tileForge == null }
@@ -226,7 +238,7 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
     fun enhancers(): List<Holder<EnhancerDefinition>> = this.cacheData.enhancers()
 
     private fun toggleIndicator(enabled: Boolean) {
-        this.indicatorRitual = if (enabled) ValidRitualIndicator(true) else null
+        this.indicatorRitual = ValidRitualIndicator(true).onlyIf { enabled }
     }
 
     private fun saveChanges(registries: HolderLookup.Provider) =
@@ -237,7 +249,7 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
         )
 
     override fun triggerEvent(id: Int, type: Int): Boolean {
-        when (id) {
+        return when (id) {
             HephaestusForgeBlockEntity.UPDATE_MAGIC_CIRCLE ->
                 this.controllerCircle.handleEvent(this.level, this.blockPos, type)
 
@@ -248,8 +260,7 @@ class TileHephaestusPackaged(pos: BlockPos, state: BlockState) : BaseBlockEntity
                 this.durationRitual = type
 
             else -> return super.triggerEvent(id, type)
-        }
-        return true
+        }.unit(true)
     }
 
     fun putEnhancer(stack: ItemStack): Boolean {

@@ -6,7 +6,6 @@ import com.fish.packaged_faa.mixin.extension.ExtensionJarEssence;
 import com.stal111.forbidden_arcanus.common.block.entity.EssenceUtremJarBlockEntity;
 import com.stal111.forbidden_arcanus.common.block.entity.forge.essence.EssenceType;
 import com.stal111.forbidden_arcanus.core.init.ModBlocks;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -69,7 +68,7 @@ public abstract class MixinJarEssence extends BlockEntity
     }
 
     @Override
-    public void pfaa$tickClient(@NotNull ClientLevel level, @NotNull BlockPos pos, @NotNull BlockState state) {
+    public void pfaa$tickClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
         this.pfaa$collectExp(level, pos);
     }
 

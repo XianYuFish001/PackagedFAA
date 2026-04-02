@@ -2,13 +2,16 @@ package com.fish.packaged_faa.common.registry.block.tile
 
 import com.fish.packaged_faa.common.init.PFAATiles
 import com.stal111.forbidden_arcanus.common.block.entity.PedestalBlockEntity
+import com.stal111.forbidden_arcanus.common.block.pedestal.effect.PedestalEffectTrigger
 import net.minecraft.core.BlockPos
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
+import kotlin.jvm.optionals.getOrNull
 
 class TilePedestalPackaged(pos: BlockPos, state: BlockState) : PedestalBlockEntity(pos, state) {
     internal var tileForge: TileHephaestusPackaged? = null
@@ -21,6 +24,13 @@ class TilePedestalPackaged(pos: BlockPos, state: BlockState) : PedestalBlockEnti
         }
 
     override fun getStack() = this.stack
+
+    override fun clearStack(player: Player?, trigger: PedestalEffectTrigger) {
+        super.clearStack(player, trigger)
+        this.stack = ItemStack.EMPTY
+    }
+
+    override fun setStack(stack: ItemStack, player: Player?, trigger: PedestalEffectTrigger) = Unit
 
     override fun onLoad() {
         super.onLoad()
@@ -62,9 +72,12 @@ class TilePedestalPackaged(pos: BlockPos, state: BlockState) : PedestalBlockEnti
 
     override fun loadAdditional(data: CompoundTag, lookupProvider: HolderLookup.Provider) {
         super.loadAdditional(data, lookupProvider)
-        if (!data.contains("stack")) this.stack = ItemStack.EMPTY
-        else this.stack = ItemStack.parse(lookupProvider, data.getCompound("stack"))
-            .orElse(ItemStack.EMPTY)
+        this.stack = if (!data.contains("stack"))
+            ItemStack.EMPTY
+        else ItemStack.parse(
+            lookupProvider,
+            data.getCompound("stack")
+        ).getOrNull() ?: ItemStack.EMPTY
     }
 
     override fun getType(): BlockEntityType<*> = PFAATiles.pedestalPackaged.get()
